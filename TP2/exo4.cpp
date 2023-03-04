@@ -13,7 +13,15 @@ void recursivQuickSort(Array& toSort, int size)
 	Array& lowerArray = w->newArray(size);
 	Array& greaterArray= w->newArray(size);
 	int lowerSize = 0, greaterSize = 0; // effectives sizes
-
+	int pivot=toSort.size()/2;
+	for(uint i=0;i<pivot;i++){
+		lowerArray.insert(toSort[i],i)
+	}
+	for(uint j=pivot;j<size;j++){
+		greaterArray.insert(toSort[j],j);
+	}
+	recursivQuickSort(lowerArray,size);
+	recursivQuickSort(greaterArray,size);
 	// split
 	
 	// recursiv sort of lowerArray and greaterArray
