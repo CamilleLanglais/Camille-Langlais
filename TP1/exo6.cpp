@@ -16,7 +16,6 @@ struct Liste{
 
 struct DynaTableau{
     int taille;
-   int *donees;
    int capacity;
    int *tab[255];
    
@@ -170,52 +169,59 @@ void stocke(DynaTableau* tableau, int n, int valeur)
 }
 
 //void pousse_file(DynaTableau* liste, int valeur)
-void pousse_file(Liste* liste, int valeur)
+void pousse_file(DynaTableau *tableau, int valeur)
 {
-    Noeud *noeud1= liste->premier;
-    
-    if(noeud1==nullptr){
-        Noeud *new_noeud= new Noeud;
-        new_noeud->donnee=valeur;
-        liste->premier=new_noeud;
-    }
-    while(noeud1->suivant!= nullptr){
-        noeud1=noeud1->suivant;
-}
-    Noeud *new_noeud= new Noeud;
-    noeud1->suivant = new_noeud;
-    new_noeud->donnee=valeur;
-
+   //on ajoute au début
+   int tab2[tableau->taille+1];
+   for(int i=1;i<tableau->taille+1;i++){
+    tab2[i]=*tableau->tab[i-1];      //on  copie exactement le tableau en décalant tout de 1 case
+   }
+    tab2[0]=valeur;
+    *tableau->tab=tab2;
 
 }
 
 
 
 //int retire_file(Liste* liste)
-int retire_file(Liste* liste)
+int retire_file(DynaTableau *tableau)
 {
-    while(liste->premier!=nullptr){
-        cout<<liste->premier->donnee;
-        liste->premier->donnee=liste->premier->suivant->donnee;
-        liste->premier=liste->premier->suivant;
+   int tab2[tableau->taille -1];
+   for(int i=1;i<tableau->taille;i++){
+        tab2[i - 1]=*tableau->tab[i];
     }
-    return 0;
+    int result=*tableau->tab[0];      //on récupère la dernière valeur
+    *tableau->tab=tab2;
+    return result;
 }
 
 //void pousse_pile(DynaTableau* liste, int valeur)
-void pousse_pile(Liste* liste, int valeur)
+void pousse_pile(DynaTableau *tableau, int valeur)
 {
-
+// on ajoute à la fin
+int tab2[tableau->taille +1];
+for(int i=0;i<tableau->taille;i++){
+    tab2[i]=*tableau->tab[i];
+}
+tab2[tableau->taille]=valeur;
+*tableau->tab=tab2;
 }
 
 //int retire_pile(DynaTableau* liste)
-int retire_pile(Liste* liste)
+int retire_pile(DynaTableau* tableau)
 {
-    stack<int> i;
-    if(liste->premier != nullptr){  // Il faut que la liste soit non nulle
-        liste.pop();
+    
+
+    int tab2[tableau->taille -1];
+    for(int i=0;i<tableau->taille -1 ;i++){
+        tab2[i]=*tableau->tab[i];
     }
-    return 0;
+    int result=*tableau->tab[tableau->taille-1];      //on récupère la dernière valeur
+    *tableau->tab=tab2;
+    return result;
+
+
+
 }
 
 
