@@ -1,8 +1,8 @@
 #include <iostream>
-#include <stack>
-
-
 using namespace std;
+
+void ajoute(Liste* liste, int valeur);
+
 
 struct Noeud{
     int donnee;
@@ -15,10 +15,9 @@ struct Liste{
 };
 
 struct DynaTableau{
-    int taille;
+    int current;
    int capacity;
-   int *tab[255];
-   
+   int* donnees;
 };
 
 
@@ -84,13 +83,13 @@ int cherche(const Liste* liste, int valeur)
     int c=0;
     Noeud *noeud1=liste->premier;
     if(liste->premier->donnee==valeur){
-        return c;
+        cout<<c<<endl;
     }
     else{
     while(liste->premier != nullptr){
         noeud1=liste->premier->suivant;
         if(noeud1->donnee==valeur){
-            return c;
+            cout<<c<<endl;
         } 
         c++;  
     }
@@ -101,25 +100,23 @@ int cherche(const Liste* liste, int valeur)
 
 void stocke(Liste* liste, int n, int valeur)
 {
-    int c=0;
-    Noeud *noeud1= liste->premier;
-    while(c!=n){
-        c++;
-        noeud1=noeud1->suivant;
-    }
-    noeud1->donnee=valeur;
+    int new_valeur=recupere(liste, n);
+    new_valeur=valeur;
 
 }
 
 void ajoute(DynaTableau* tableau, int valeur)
 {
-    int len=tableau->taille;
-    if (len==tableau->capacity){
-        tableau->donees=new ; // Je ne sais pas quoi mettre pour ajouter une nouvelle case dans le tableau
-        
+   if(tableau->current == tableau->capacity){
+    int *newtableau = new int[tableau->capacity * 2];
+    for (int i = 0 ; i < tableau->current ; i++){
+        newtableau[i] = tableau->donnees[i];
     }
-        *tableau->tab[len]=valeur;
-    
+    tableau->donnees = newtableau;
+    tableau->capacity *= 2;
+}
+    tableau->donnees[tableau->current] = valeur;
+    tableau->current++;
 }
 
 
@@ -132,30 +129,32 @@ void initialise(DynaTableau* tableau, int capacite)
 
 bool est_vide(const DynaTableau* liste)
 {
-    if(sizeof(liste)==0){
-        return true;
-    }
-    return false;
+    return (liste->current == 0);
 }
 
 void affiche(const DynaTableau* tableau)
 {
-    int len=sizeof(tableau->tab);
-    for(int i=0;i<len;i++){
-        cout<<*tableau->tab[i]<<endl;
+
+    for(int i = 0 ; i < tableau->current ; i++){
+        cout<<tableau->donnees[i]<<endl;
     }
 }
 
 int recupere(const DynaTableau* tableau, int n)
 {
- return *tableau->tab[n-1];
+    if(n < tableau->current){
+        return tableau->donnees[n];
+    }
+
+    cout<<"Error!"<<endl;
+    return 0;
+ 
 }
 
 int cherche(const DynaTableau *tableau, int valeur)
 {
-    int len=sizeof(tableau->tab);
-    for(int i=0;i<len; i++){
-        if(*tableau->tab[i]==valeur){
+    for(int i = 0 ; i < tableau->current ; i++){
+        if(tableau->donnees[i]==valeur){
             return(i);
         }
     }
@@ -164,20 +163,24 @@ int cherche(const DynaTableau *tableau, int valeur)
 
 void stocke(DynaTableau* tableau, int n, int valeur)
 {
-    *tableau->tab[n-1]=valeur;
-
+    if(n<tableau->current){
+        tableau->donnees[n]=valeur;
+    }
+    else{
+        cout<<"Error!"<<endl;
+    }
 }
 
 //void pousse_file(DynaTableau* liste, int valeur)
 void pousse_file(DynaTableau *tableau, int valeur)
 {
    //on ajoute au début
-   int tab2[tableau->taille+1];
-   for(int i=1;i<tableau->taille+1;i++){
-    tab2[i]=*tableau->tab[i-1];      //on  copie exactement le tableau en décalant tout de 1 case
+   int tab2[tableau->current+1];
+   for(int i=1;i<tableau->current+1;i++){
+    tab2[i]=tableau->donnees[i-1];      //on  copie exactement le tableau en décalant tout de 1 case
    }
     tab2[0]=valeur;
-    *tableau->tab=tab2;
+    tableau->donnees=tab2;
 
 }
 
@@ -186,12 +189,12 @@ void pousse_file(DynaTableau *tableau, int valeur)
 //int retire_file(Liste* liste)
 int retire_file(DynaTableau *tableau)
 {
-   int tab2[tableau->taille -1];
-   for(int i=1;i<tableau->taille;i++){
-        tab2[i - 1]=*tableau->tab[i];
+   int tab2[tableau->current -1];
+   for(int i=1;i<tableau->current;i++){
+        tab2[i - 1]=tableau->donnees[i];
     }
-    int result=*tableau->tab[0];      //on récupère la dernière valeur
-    *tableau->tab=tab2;
+    int result=tableau->donnees[0];      //on récupère la dernière valeur
+    tableau->donnees=tab2;
     return result;
 }
 
@@ -199,29 +202,24 @@ int retire_file(DynaTableau *tableau)
 void pousse_pile(DynaTableau *tableau, int valeur)
 {
 // on ajoute à la fin
-int tab2[tableau->taille +1];
-for(int i=0;i<tableau->taille;i++){
-    tab2[i]=*tableau->tab[i];
+int tab2[tableau->current +1];
+for(int i=0;i<tableau->current;i++){
+    tab2[i]=tableau->donnees[i];
 }
-tab2[tableau->taille]=valeur;
-*tableau->tab=tab2;
+tab2[tableau->current]=valeur;
+tableau->donnees=tab2;
 }
 
 //int retire_pile(DynaTableau* liste)
 int retire_pile(DynaTableau* tableau)
 {
-    
-
-    int tab2[tableau->taille -1];
-    for(int i=0;i<tableau->taille -1 ;i++){
-        tab2[i]=*tableau->tab[i];
+    int tab2[tableau->current -1];
+    for(int i=0;i<tableau->current -1 ;i++){
+        tab2[i]=tableau->donnees[i];
     }
-    int result=*tableau->tab[tableau->taille-1];      //on récupère la dernière valeur
-    *tableau->tab=tab2;
+    int result=tableau->donnees[tableau->current-1];      //on récupère la dernière valeur
+    tableau->donnees=tab2;
     return result;
-
-
-
 }
 
 

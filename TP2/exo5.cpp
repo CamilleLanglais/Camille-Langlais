@@ -15,14 +15,37 @@ void splitAndMerge(Array& origin)
 	Array& second = w->newArray(origin.size()-first.size());
 	
 	// split
-
+	for(uint i=0;i<origin.size()/2;i++){
+		first[i]=origin[i];
+	}
+	for(uint i=0;i<origin.size()-first.size()){
+		second[i]=origin[i+first.size()];
+	}
+	
 	// recursiv splitAndMerge of lowerArray and greaterArray
+	splitAndMerge(first);
+	splitAndMerge(second)
 
 	// merge
+	merge(first, second, origin);
+
 }
 
 void merge(Array& first, Array& second, Array& result)
 {
+	int cursor1=0;
+	int cursor2=0;
+	for(int i=0;i<result.size;i++){
+		if(first[cursor1]<second[cursor2]){
+			result[i]=cursor1;
+			cursor1++;
+		}
+		else{
+			result[i]=cursor2;
+			cursor2++;
+		}
+		// si un des deux dépasse on break
+	}
 
 }
 
