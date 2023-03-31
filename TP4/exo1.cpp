@@ -1,6 +1,5 @@
 #include "tp4.h"
 #include "mainwindow.h"
-
 #include <QApplication>
 #include <time.h>
 #include <stdio.h>
@@ -35,15 +34,20 @@ void Heap::insertHeapNode(int heapSize, int value)
 void Heap::heapify(int heapSize, int nodeIndex)
 {
 	// use (*this)[i] or this->get(i) to get a value at index i
-    int i_max=nodeIndex;
-    if(i_max == leftChild(nodeIndex && leftChild(nodeIndex)<heapsize)){
-        swap( );
-
-
+    
+    // use (*this)[i] or this->get(i) to get a value at index i
+    int i_max = nodeIndex;
+        if((*this).leftChild(nodeIndex)<heapSize && (*this)[leftChild(nodeIndex)]>(*this)[nodeIndex]){
+            i_max=(*this).leftChild(nodeIndex);
+       
+        }
+        if((*this).rightChild(nodeIndex)<heapSize && (*this)[rightChild(nodeIndex)]>(*this)[i_max]){
+            i_max=(*this).rightChild(nodeIndex);
+        }
+    if(i_max != nodeIndex){
+        (*this).swap(nodeIndex, i_max);
+        (*this).heapify(heapSize, i_max);
     }
-            if(i_max == rightChild){
-
-}
 }
 
 void Heap::buildHeap(Array& numbers)
