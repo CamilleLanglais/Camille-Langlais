@@ -46,15 +46,27 @@ struct MapNode : public BinaryTree
 
         this->left = this->right = nullptr;
     }
-
+}
     /**
      * @brief insertNode insert a new node according to the key hash
      * @param node
      */
     void insertNode(MapNode* node)
     {
+        if(this->left != nullptr){
+        this->left->insertNode(node);
+      }
+        else{
+        this->left = node;
+      }
+        if(this->right != nullptr){
+            this->right->insertNode(node);
+        }
+        else{
+            this->right = node;
+        }
 
-    }
+      }
 
     void insertNode(string key, int value)
     {
@@ -65,7 +77,7 @@ struct MapNode : public BinaryTree
     QString toString() const override {return QString("%1:\n%2").arg(QString::fromStdString(key)).arg(value);}
     Node* get_left_child() const {return left;}
     Node* get_right_child() const {return right;}
-};
+;
 
 struct Map
 {
@@ -80,7 +92,12 @@ struct Map
      */
     void insert(string key, int value)
     {
-
+        if(this->root != nullptr){
+            this->root->insertNode(key, value);
+        }
+        else{
+            this->root = new MapNode(key, value);
+            }
     }
 
     /**
@@ -90,7 +107,7 @@ struct Map
      */
     int get(string key)
     {
-        return -1;
+        return this->root->getValue(key);
     }
 
     MapNode* root;

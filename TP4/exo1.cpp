@@ -37,22 +37,26 @@ void Heap::heapify(int heapSize, int nodeIndex)
     
     // use (*this)[i] or this->get(i) to get a value at index i
     int i_max = nodeIndex;
-        if((*this).leftChild(nodeIndex)<heapSize && (*this)[leftChild(nodeIndex)]>(*this)[nodeIndex]){
-            i_max=(*this).leftChild(nodeIndex);
+        if(this->leftChildIndex(nodeIndex)<heapSize && this->get(nodeIndex) < this->get(this->leftChildIndex(nodeIndex))){
+            i_max=this->leftChildIndex(nodeIndex);
        
         }
-        if((*this).rightChild(nodeIndex)<heapSize && (*this)[rightChild(nodeIndex)]>(*this)[i_max]){
-            i_max=(*this).rightChild(nodeIndex);
+        if(this->rightChildIndex(nodeIndex)<heapSize && this->get(i_max) < this->get(this->rightChildIndex(nodeIndex))){
+            i_max=this.rightChildIndex(nodeIndex);
         }
     if(i_max != nodeIndex){
-        (*this).swap(nodeIndex, i_max);
-        (*this).heapify(heapSize, i_max);
+       this->swap(nodeIndex, i_max);
+       this->heapify(heapSize, i_max);
     }
 }
 
 void Heap::buildHeap(Array& numbers)
 {
-
+    uint size = this->size() - 1;
+    for(uint i = size ; i >0 ; i--){
+        this->swap(0,i);
+        this->heapify(i,0);
+    }
 }
 
 void Heap::heapSort()
