@@ -24,31 +24,35 @@ struct SearchTreeNode : public Node
 
 	void insertNumber(int value) {
         // create a new node and insert it in right or left child
-        if(this->left != nullptr){
+        if(value < this->value){
+
+            if(this->left != nullptr){
             this->left->insertNumber(value);
         }
-        else{
+            else{
             SearchTreeNode *new_noeud = new SearchTreeNode(value);
-            if(new_noeud == nullptr){
+                if(new_noeud == nullptr){
                 cout<<"Error"<<endl;
                 exit(1);
             }
             this->left = new_noeud;
         }
+     }
+        else{
 
-
-        if(this->right != nullptr){
+            if(this->right != nullptr){
             this->right->insertNumber(value);
         }
-        else{
+            else{
             SearchTreeNode *new_noeud = new SearchTreeNode(value);
-            if(new_noeud == nullptr){
+                if(new_noeud == nullptr){
                 cout<<"Eroor."<<endl;
                 exit(1);
             }
             this->right = new_noeud;
         }
     }
+}
 
 
 
@@ -105,7 +109,7 @@ return 1;
         
         if(this->left == nullptr && this->right == nullptr){
             leaves[leavesCount] = this;
-            
+            leavesCount ++;
         }
         if(this->left !=  nullptr){
             this->left->allLeaves(leaves, leavesCount);

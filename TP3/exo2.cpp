@@ -31,6 +31,7 @@ void binarySearchAll(Array& array, int toSearch, int& indexMin, int& indexMax)
 		}
 		else{
 			indexMin = mid;
+			end = mid;
 		}
 	}
 
@@ -53,6 +54,7 @@ void binarySearchAll(Array& array, int toSearch, int& indexMin, int& indexMax)
 		else
 		{
 			indexMax = mid;
+			start = mid+1;
 		}
 	}
 
