@@ -17,10 +17,8 @@ int search(int value, Array& toSort, int size)
         if(toSort[size-1]==value){
             return(size-1);
         }
-        else{
-            search(value, &toSort, size-1);
-        }
     }
+    return_and_display(search(value,toSort, size-1));
     // check the last cell and if it does not correspond
     // then consider a smaller array when recalling search
 }

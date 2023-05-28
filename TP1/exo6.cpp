@@ -121,9 +121,12 @@ void ajoute(DynaTableau* tableau, int valeur)
 
 
 
-void initialise(DynaTableau* tableau, int capacite)
+void initialise(DynaTableau* tableau, int capacity)
 {
-    tableau[capacite]=tableau[0];
+    tableau->capacity = capacity;
+    tableau->current = 0;
+    tableau->donnees = new int[capacity];
+
 
 }
 
@@ -172,54 +175,47 @@ void stocke(DynaTableau* tableau, int n, int valeur)
 }
 
 //void pousse_file(DynaTableau* liste, int valeur)
-void pousse_file(DynaTableau *tableau, int valeur)
+void pousse_file(Liste *liste, int valeur)
 {
    //on ajoute au début
-   int tab2[tableau->current+1];
-   for(int i=1;i<tableau->current+1;i++){
-    tab2[i]=tableau->donnees[i-1];      //on  copie exactement le tableau en décalant tout de 1 case
-   }
-    tab2[0]=valeur;
-    tableau->donnees=tab2;
-
+   ajoute(liste, valeur);
 }
 
 
 
 //int retire_file(Liste* liste)
-int retire_file(DynaTableau *tableau)
+int retire_file(Liste *liste)
 {
-   int tab2[tableau->current -1];
-   for(int i=1;i<tableau->current;i++){
-        tab2[i - 1]=tableau->donnees[i];
-    }
-    int result=tableau->donnees[0];      //on récupère la dernière valeur
-    tableau->donnees=tab2;
-    return result;
+   if(!est_vide(liste)){
+    Noeud *newNoeud = liste->premier->suivant;
+    cout<<liste->premier->donnee;
+    liste->premier = newNoeud;
+   }
+   else{
+    cout<<"Error";
+   }
+
 }
 
 //void pousse_pile(DynaTableau* liste, int valeur)
-void pousse_pile(DynaTableau *tableau, int valeur)
+void pousse_pile(Liste *liste, int valeur)
 {
 // on ajoute à la fin
-int tab2[tableau->current +1];
-for(int i=0;i<tableau->current;i++){
-    tab2[i]=tableau->donnees[i];
-}
-tab2[tableau->current]=valeur;
-tableau->donnees=tab2;
+    ajoute(liste, valeur);
 }
 
 //int retire_pile(DynaTableau* liste)
-int retire_pile(DynaTableau* tableau)
+int retire_pile(Liste *liste)
 {
-    int tab2[tableau->current -1];
-    for(int i=0;i<tableau->current -1 ;i++){
-        tab2[i]=tableau->donnees[i];
+    if(!est_vide(liste)){
+        Noeud *newNoeud = liste->premier->suivant;
+        cout<<liste->premier->donnee;
+        liste->premier = newNoeud;
     }
-    int result=tableau->donnees[tableau->current-1];      //on récupère la dernière valeur
-    tableau->donnees=tab2;
-    return result;
+    else{
+        cout<<"Error";
+    }
+    return 0;
 }
 
 
