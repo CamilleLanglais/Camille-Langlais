@@ -1,6 +1,7 @@
 #include "tp6.h"
 #include <QApplication>
 #include <time.h>
+#include <cmath>
 
 MainWindow* w = nullptr;
 
@@ -30,38 +31,48 @@ void Graph::deepTravel(GraphNode *first, GraphNode *nodes[], int &nodesSize, boo
 	/**
 	  * Fill nodes array by travelling graph starting from first and using recursivity
 	  */
-   nodes[nodesSize + 1] = first;
-   visited[nodesSize + 1] = true;
-   for(Edge e = first->edges ; e != nullptr ; e=e->next){
-       if( !visited[e->destination->value]){
-           deepTravel(e->destination, nodes, nodesSize, visited);
-       }
+   nodes[nodesSize] = first;
+   nodesSize ++;
+   visited[first->value] = true;
+
+   for(Edge *edge = first->edges; edge!=nullptr; edge = edge->next ){
+		if(!visited[edge->destination->value]){
+			deepTravel(edge->destination, nodes, nodesSize, visited);
+		}
    }
 }
+/**
+ * Fill nodes array by travelling graph starting from first and using queue
+ * nodeQueue.push(a_node)
+ * nodeQueue.front() -> first node of the queue
+ * nodeQueue.pop() -> remove first node of the queue
+ * nodeQueue.size() -> size of the queue
+ */
+
 void Graph::wideTravel(GraphNode *first, GraphNode *nodes[], int &nodesSize, bool visited[])
 {
-	/**
-	 * Fill nodes array by travelling graph starting from first and using queue
-	 * nodeQueue.push(a_node)
-	 * nodeQueue.front() -> first node of the queue
-	 * nodeQueue.pop() -> remove first node of the queue
-	 * nodeQueue.size() -> size of the queue
-	 */
-	std::queue<GraphNode*> nodeQueue;
+	std::queue<GraphNode *> nodeQueue;
 	nodeQueue.push(first);
-	 while(!nodeQueue.empty()){
-        GraphNode *n = nodeQueue.front();
-        nodeQueue.pop();
-        visited[n->value]=true;
-        nodes[nodesSize]=n;
-        nodesSize++;
-        for(Edge *e=n->edges; e!=NULL; e=e->next){
-            if(!visited[e->destination->value]){
-                nodeQueue.push(e->destination);
-            }
-        }
+	visited[first->value] = true;
+
+	while (!nodeQueue.empty())
+	{
+		GraphNode *current_node = nodeQueue.front();
+		nodeQueue.pop();
+		nodes[nodesSize] = current_node;
+		nodesSize++;
+
+		for (Edge *tmp_edge = current_node->edges; tmp_edge != nullptr; tmp_edge = tmp_edge->next)
+		{
+			if (!visited[tmp_edge->destination->value])
+			{
+				nodeQueue.push(tmp_edge->destination);
+				visited[tmp_edge->destination->value] = true;
+			}
+		}
+	}
 }
-}
+
 bool Graph::detectCycle(GraphNode *first, bool visited[])
 {
 	/**
@@ -69,7 +80,26 @@ bool Graph::detectCycle(GraphNode *first, bool visited[])
 	  (the first may not be in the cycle)
 	  Think about what's happen when you get an already visited node
 	**/
-    return false;
+	visited[first->value] = true;
+	
+	for (Edge *edge = first->edges; edge != nullptr; edge = edge->next)
+	{
+		if (!visited[edge->destination->value])
+		{
+			bool answer = detectCycle(edge->destination, visited);
+			if (answer == true)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	return false;
+
 }
 
 int main(int argc, char *argv[])

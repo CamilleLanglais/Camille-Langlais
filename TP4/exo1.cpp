@@ -61,7 +61,10 @@ void Heap::buildHeap(Array& numbers)
 
 void Heap::heapSort()
 {
-
+    for(int i = this->size()-1 ; i > 0 ; i--){
+        this->swap(0,i);
+        this->heapify(i,0);
+    }
 }
 
 int main(int argc, char *argv[])

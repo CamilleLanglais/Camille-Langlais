@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #include <tp5.h>
 
@@ -24,7 +25,12 @@ std::vector<string> TP5::names(
 unsigned long int hash(string key)
 {
     // return an unique hash id from key
-    return 0;
+
+    int hash_value = 0;
+    for(uint i = 0; i < key.size(); i++){
+        hash_value += (int) key.at(i) * pow(128,i);
+    }
+    return hash_value;
 }
 
 struct MapNode : public BinaryTree
@@ -73,6 +79,30 @@ struct MapNode : public BinaryTree
         this->insertNode(new MapNode(key, value));
     }
 
+    int getValue(string key){
+        int current_key_hash= hash(key);
+        if (current_key_hash == this->key_hash){
+            return this->value;
+        }
+        else{
+            if (this->left != nullptr){
+                int left = this->left->getValue(key);
+
+                if (left != 0){
+                    return left;
+                }
+            }
+            if (this->right != nullptr)
+            {
+                return this->right->getValue(key);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
     virtual ~MapNode() {}
     QString toString() const override {return QString("%1:\n%2").arg(QString::fromStdString(key)).arg(value);}
     Node* get_left_child() const {return left;}
@@ -109,8 +139,6 @@ struct Map
     {
         return this->root->getValue(key);
     }
-
-    MapNode* root;
 };
 
 
@@ -121,7 +149,7 @@ int main(int argc, char *argv[])
     std::vector<std::string> inserted;
 
     map.insert("Yolo", 20);
-    for (std::string& name : TP5::names)
+    for (std::string &name : TP5::names)
     {
         if (rand() % 3 == 0)
         {

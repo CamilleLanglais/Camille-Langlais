@@ -11,8 +11,7 @@ std::vector<string> TP5::names(
     "JoLeClodo", "Anais", "Jolan", "Marie", "Cindy", "Flavien", "Tanguy", "Audrey",
     "Mr.PeanutButter", "Bojack", "Mugiwara", "Sully", "Solem",
     "Leo", "Nils", "Vincent", "Paul", "Zoe", "Julien", "Matteo",
-    "Fanny", "Jeanne", "Elo"
-});
+    "Fanny", "Jeanne", "Elo"});
 
 
 int HashTable::hash(std::string element)
@@ -27,15 +26,15 @@ int HashTable::hash(std::string element)
 
 void HashTable::insert(std::string element)
 {
-    for(int i = 0 ; i < this->size() ; i++){
-        // use (*this)[i] or this->get(i) to get a value at index i
-        if(this->get(i) ==((int)element[0])){
-            this->get(i) = element;
+    for(int i=0 ; i < this->size(); i++){
+        if(i==hash(element)){
+            this->get(i)=element;
         }
+    }
 }
     
 
-}
+
 /**
  * @brief buildHashTable: fill the HashTable with given names
  * @param table table to fiil
